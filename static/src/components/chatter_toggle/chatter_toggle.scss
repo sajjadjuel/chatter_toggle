@@ -1,0 +1,364 @@
+/* Copyright 2024 Sajjad
+ * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
+
+/* Navbar-style toggle container */
+.o-chatter-navbar-toggle {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 45px;
+    transition: all 0.3s ease;
+    z-index: 100;
+    
+    &.collapsed {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    }
+    
+    &.expanded {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Main toggle button */
+.o-chatter-toggle-btn {
+    background: none;
+    border: none;
+    color: #495057;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+    
+    /* Icon styling */
+    i {
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Label styling */
+    .o-toggle-label {
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+}
+
+/* Collapsed state styling */
+.o-chatter-navbar-toggle.collapsed {
+    .o-chatter-toggle-btn {
+        color: white;
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        i {
+            animation: pulse 2s infinite;
+        }
+    }
+}
+
+/* Pulse animation for collapsed state */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Show appropriate chevron based on chatter layout */
+.o-mail-Form-chatter {
+    /* Default: show bottom chevrons (up/down) */
+    .o-sidebar-chevron {
+        display: none;
+    }
+    
+    .o-bottom-chevron {
+        display: inline-block;
+    }
+    
+    /* For sidebar layout: show side chevrons (left/right) */
+    &.o-aside {
+        .o-sidebar-chevron {
+            display: inline-block;
+        }
+        
+        .o-bottom-chevron {
+            display: none;
+        }
+    }
+}
+
+/* Hide chatter content when toggled off */
+.o-mail-Form-chatter {
+    position: relative;
+    transition: all 0.3s ease;
+    
+    &.o-chatter-hidden {
+        /* For normal (bottom) chatter - just minimize */
+        &:not(.o-aside) {
+            .o-mail-Chatter-content {
+                display: none !important;
+            }
+            
+            /* Minimize the chatter container when hidden */
+            min-height: 60px;
+            height: 60px;
+            overflow: hidden;
+            
+            .o-mail-Chatter-top {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+                padding: 10px;
+                min-height: 60px;
+            }
+        }
+        
+        /* For sidebar chatter - keep navbar toggle visible */
+        &.o-aside {
+            width: 60px !important;
+            min-width: 60px !important;
+            max-width: 60px !important;
+            overflow: visible !important;
+            
+            .o-mail-Chatter-content {
+                display: none !important;
+            }
+            
+            .o-mail-Chatter-top {
+                display: none !important;
+            }
+            
+            /* Navbar toggle stays visible and spans full height */
+            .o-chatter-navbar-toggle {
+                height: 100vh;
+                width: 60px;
+                min-height: 100vh;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 20px;
+                border-bottom: none;
+                border-left: 3px solid #007bff;
+                
+                .o-chatter-toggle-btn {
+                    writing-mode: vertical-rl;
+                    text-orientation: mixed;
+                    padding: 12px 8px;
+                    border-radius: 0 15px 15px 0;
+                    margin-right: -3px;
+                    
+                    .o-toggle-label {
+                        writing-mode: vertical-rl;
+                        text-orientation: mixed;
+                        margin-top: 8px;
+                    }
+                    
+                    i {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Full screen mode when sidebar chatter is hidden */
+.o_form_view_container.o-chatter-fullscreen,
+.o_form_sheet_bg.o-chatter-fullscreen {
+    width: calc(100% - 60px) !important;
+    max-width: calc(100% - 60px) !important;
+    flex: 1 1 calc(100% - 60px) !important;
+}
+
+/* Adjust form view when chatter is hidden for better full-screen experience */
+.o_form_view_container.o-chatter-fullscreen {
+    .o_form_sheet_bg {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Ensure form sheet takes full width */
+    .o_form_sheet {
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* Enhanced navbar toggle for better UX */
+.o-chatter-navbar-toggle {
+    /* Hover effects */
+    &:hover {
+        .o-chatter-toggle-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+    }
+    
+    /* Active state feedback */
+    &:active {
+        transform: scale(0.98);
+    }
+    
+    /* Better shadow when expanded */
+    &.expanded {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    /* Enhanced collapsed state */
+    &.collapsed {
+        border-left: 4px solid #ffffff;
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 50%, #004085 100%);
+        
+        &:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #004085 50%, #003d82 100%);
+            transform: translateX(2px);
+        }
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Adjust navbar toggle for mobile */
+    .o-chatter-navbar-toggle {
+        min-height: 40px;
+        
+        .o-chatter-toggle-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            
+            .o-toggle-label {
+                font-size: 11px;
+            }
+            
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+    
+    /* On mobile, hide sidebar chatter completely when toggled */
+    .o-mail-Form-chatter.o-chatter-hidden.o-aside {
+        display: none !important;
+    }
+    
+    .o_form_view_container.o-chatter-fullscreen {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Enhanced mobile floating toggle button */
+    .o-mobile-chatter-toggle {
+        position: fixed;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        z-index: 1050;
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        display: none;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        
+        &.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideIn 0.3s ease;
+        }
+        
+        &:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
+        }
+        
+        &:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        /* Subtle pulse animation */
+        &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0;
+            animation: ripple 2s infinite;
+        }
+    }
+}
+
+/* Animations for mobile */
+@keyframes slideIn {
+    from {
+        transform: translateY(-50%) translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-50%) translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes ripple {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+
+/* Animation for smooth transitions */
+.o-mail-Chatter-content {
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+/* Smooth transition for form expansion */
+.o_form_view_container,
+.o_form_sheet_bg {
+    transition: width 0.3s ease, max-width 0.3s ease, flex 0.3s ease;
+}
+
+/* When chatter is being toggled */
+.o-mail-Form-chatter.toggling {
+    .o-mail-Chatter-content {
+        opacity: 0.7;
+    }
+} 

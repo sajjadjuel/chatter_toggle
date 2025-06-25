@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 Sajjad
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<templates>
+    <t t-name="chatter_toggle.ChatterToggle" 
+       t-inherit="mail.Chatter" 
+       t-inherit-mode="extension">
+        
+        <!-- Add navbar-style toggle button -->
+        <xpath expr="//div[hasclass('o-mail-Chatter-top')]" position="before">
+            <div class="o-chatter-navbar-toggle" 
+                 t-att-class="{
+                     'collapsed': !toggleState.isChatterVisible,
+                     'expanded': toggleState.isChatterVisible
+                 }">
+                <button type="button" 
+                        class="o-chatter-toggle-btn"
+                        t-on-click="toggleChatterVisibility"
+                        t-att-title="toggleState.isChatterVisible ? 'Hide Chatter' : 'Show Chatter'">
+                    <!-- For sidebar chatter: use left/right chevrons -->
+                    <i t-if="props.hasMessageList" 
+                       t-att-class="{
+                           'fa fa-chevron-left': toggleState.isChatterVisible,
+                           'fa fa-chevron-right': !toggleState.isChatterVisible
+                       }"
+                       class="o-sidebar-chevron"/>
+                    <!-- For bottom chatter: use up/down chevrons -->
+                    <i t-if="props.hasMessageList" 
+                       t-att-class="{
+                           'fa fa-chevron-up': toggleState.isChatterVisible,
+                           'fa fa-chevron-down': !toggleState.isChatterVisible
+                       }"
+                       class="o-bottom-chevron"/>
+                    <span class="o-toggle-label">
+                        <t t-if="toggleState.isChatterVisible">Hide</t>
+                        <t t-else="">Show</t>
+                    </span>
+                </button>
+            </div>
+        </xpath>
+        
+        <!-- Add conditional visibility to chatter content -->
+        <xpath expr="//div[hasclass('o-mail-Chatter-content')]" position="attributes">
+            <attribute name="t-att-class">{
+                'o-mail-Chatter-content': true,
+                'd-none': !toggleState.isChatterVisible
+            }</attribute>
+        </xpath>
+        
+    </t>
+</templates> 
